@@ -1,0 +1,5 @@
+idesk-backend/node_modules
+idesk-frontend/node_modules
+idesk-backend/.env
+idesk-frontend/.env
+idesk-frontend/dist
