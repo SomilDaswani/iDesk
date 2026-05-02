@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0a0f1e;
+  --bg-2: #0d1528;
+  --panel: rgba(255, 255, 255, 0.04);
+  --panel-solid: #0f1a2e;
+  --panel-border: rgba(255, 255, 255, 0.08);
+  --cyan: #00d4ff;
+  --cyan-soft: rgba(0, 212, 255, 0.12);
+  --cyan-glow: rgba(0, 212, 255, 0.35);
+  --purple: #c084fc;
+  --purple-soft: rgba(192, 132, 252, 0.12);
+  --text: #f0f4ff;
+  --text-2: #94a3b8;
+  --text-3: #475569;
+  --red: #f87171;
+  --font-display: 'Poppins', sans-serif;
+  --font-body: 'Poppins', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+html, body, #root {
+  min-height: 100%;
+  width: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--panel-border); border-radius: 2px; }
