@@ -26,6 +26,4 @@ app.post('/create-web-call', async (req, res) => {
   }
 });
 
-app.listen(3000, () => {
-  console.log('iDesk backend running on port 3000');
-});
+module.exports = app;
