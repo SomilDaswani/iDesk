@@ -1,0 +1,265 @@
+{
+  "name": "iDesk Post-Call Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "17FwJpDlKoyZXpUB8H3kq4bS3EKJ9uT0_ftPS8GKbQzA",
+          "mode": "list",
+          "cachedResultName": "iDesk Tickets",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/17FwJpDlKoyZXpUB8H3kq4bS3EKJ9uT0_ftPS8GKbQzA/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/17FwJpDlKoyZXpUB8H3kq4bS3EKJ9uT0_ftPS8GKbQzA/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Call ID": "={{$json.body.call.call_id}}",
+            "Status": "={{$json.body.call.call_analysis?.custom_analysis_data?.resolution_status || \"\"}}",
+            "Timestamp": "={{$json.body.call.start_timestamp}}",
+            "Call Duration": "={{Math.round($json.body.call.duration_ms / 1000)}}",
+            "Customer Name": "={{$json.body.call.call_analysis?.custom_analysis_data?.customer_name || \"\"}}",
+            "Email": "={{$json.body.call.call_analysis?.custom_analysis_data?.customer_email || \"\"}}",
+            "Category": "={{$json.body.call.call_analysis?.custom_analysis_data?.issue_category || \"\"}}",
+            "Severity": "={{$json.body.call.call_analysis?.custom_analysis_data?.severity || \"\"}}",
+            "Callback Time": "={{$json.body.call.call_analysis?.custom_analysis_data?.callback_time || \"\"}}",
+            "Issue Summary": "={{$json.body.call.call_analysis?.custom_analysis_data?.issue_summary || \"\"}}",
+            "User Sentiment": "={{$json.body.call.call_analysis?.user_sentiment || \"\"}}",
+            "Call Summary": "={{$json.body.call.call_analysis?.call_summary || \"\"}}",
+            "Ticket ID": "={{\"TKT-\" + $json.body.call.call_id.slice(-8).toUpperCase()}}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Ticket ID",
+              "displayName": "Ticket ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Customer Name",
+              "displayName": "Customer Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Category",
+              "displayName": "Category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Issue Summary",
+              "displayName": "Issue Summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Severity",
+              "displayName": "Severity",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Callback Time",
+              "displayName": "Callback Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Call Duration",
+              "displayName": "Call Duration",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Call ID",
+              "displayName": "Call ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Call Summary",
+              "displayName": "Call Summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "User Sentiment",
+              "displayName": "User Sentiment",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        416,
+        0
+      ],
+      "id": "c55acd65-2fff-4b81-91f0-b1a7f38a58eb",
+      "name": "Append row in sheet",
+      "alwaysOutputData": false,
+      "notesInFlow": false,
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "XyvFtylPq4ycoleY",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "idesk-calls",
+        "options": {
+          "responseCode": {
+            "values": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "7985881f-b74e-4195-a2b3-9ad65952af80",
+      "name": "Webhook",
+      "webhookId": "efe8920e-45a9-48a4-a996-6fcc9355fa95",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.Email }}",
+        "subject": "iDesk Support — Your Ticket Has Been Logged",
+        "message": "=<div style=\"font-family: Arial, sans-serif; max-width: 560px; margin: 0 auto; padding: 24px;\">\n  \n  <h2 style=\"color: #00d4ff; margin: 0 0 4px;\">iDesk Support</h2>\n  <p style=\"color: #94a3b8; font-size: 12px; margin: 0 0 24px; letter-spacing: 1px;\">AI SUPPORT TERMINAL</p>\n\n  <p style=\"color: #1e293b;\">Hi <strong>{{$json[\"Customer Name\"]}}</strong>,</p>\n  <p style=\"color: #475569; font-size: 14px;\">Your support ticket has been logged. Here's a summary:</p>\n\n  <table style=\"width:100%; border-collapse: collapse; font-size: 14px; margin: 16px 0;\">\n    <tr><td style=\"padding: 8px 0; color: #64748b; width: 130px;\">Ticket ID</td><td style=\"color: #1e293b;\"><strong>{{$json[\"Ticket ID\"]}}</strong></td></tr>\n    <tr style=\"border-top:1px solid #f1f5f9;\"><td style=\"padding: 8px 0; color: #64748b;\">Issue</td><td style=\"color: #1e293b;\">{{$json[\"Issue Summary\"]}}</td></tr>\n    <tr style=\"border-top:1px solid #f1f5f9;\"><td style=\"padding: 8px 0; color: #64748b;\">Severity</td><td style=\"color: #1e293b;\">{{$json.Severity}}</td></tr>\n    <tr style=\"border-top:1px solid #f1f5f9;\"><td style=\"padding: 8px 0; color: #64748b;\">Status</td><td style=\"color: #1e293b;\">{{$json.Status}}</td></tr>\n    <tr style=\"border-top:1px solid #f1f5f9;\"><td style=\"padding: 8px 0; color: #64748b;\">Callback</td><td style=\"color: #000000;\"><strong>{{$json[\"Callback Time\"]}}</strong></td></tr>\n  </table>\n\n  <p style=\"color: #475569; font-size: 13px;\">Our technician will reach out at your scheduled callback time.</p>\n  <p style=\"color: #94a3b8; font-size: 12px; margin-top: 24px;\">iDesk AI Support · Automated confirmation</p>\n\n</div>",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        624,
+        0
+      ],
+      "id": "4ee4e04a-25b9-4aa6-98c5-8a18fe5a4261",
+      "name": "Send a message",
+      "webhookId": "45984eb9-9a7e-432f-a18a-e702ec44cf74",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "boPMz186tItnoMTd",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "9f1114cc-80f5-4fff-9cc3-143ac9684e8f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ccc8da57f7a9afd7be8909e505997f3c0d8f7f1f07d3c294c493e045867cffec"
+  },
+  "id": "C49iTDEm8o9RPYdH",
+  "tags": []
+}
