@@ -1,28 +1,31 @@
 # iDesk — AI Voice Helpdesk Agent
 
-> A production-ready voice AI agent that triages IT support issues, attempts resolution, schedules human callbacks, and logs support tickets — all through a natural voice conversation.
+> A production-ready voice AI agent that triages IT support issues, attempts resolution, schedules human callbacks, and automatically logs support tickets — all through a natural voice conversation.
 
-![iDesk](https://img.shields.io/badge/Status-Live-00d4ff?style=flat-square) ![React](https://img.shields.io/badge/React-18-61dafb?style=flat-square&logo=react) ![Retell AI](https://img.shields.io/badge/Retell_AI-Voice_Agent-a855f7?style=flat-square) ![Node.js](https://img.shields.io/badge/Node.js-Express-339933?style=flat-square&logo=node.js)
-
----
-
-## What is iDesk?
-
-iDesk is a customer-facing IT helpdesk voice agent. Users click a button, speak naturally, and iDesk:
-
-1. Collects their name and email
-2. Identifies and categorizes their IT issue
-3. Asks targeted diagnostic questions
-4. Attempts to resolve the issue on the spot
-5. If unresolved — schedules a human callback and logs a support ticket automatically
-
-No forms. No hold music. No typing. Just voice.
+[![Live](https://img.shields.io/badge/Status-Live-00d4ff?style=flat-square)](https://idesk-ai.vercel.app) ![React](https://img.shields.io/badge/React-18-61dafb?style=flat-square&logo=react) ![Retell AI](https://img.shields.io/badge/Retell_AI-Voice_Agent-a855f7?style=flat-square) ![Node.js](https://img.shields.io/badge/Node.js-Express-339933?style=flat-square&logo=node.js) ![n8n](https://img.shields.io/badge/n8n-Automation-ea4b71?style=flat-square)
 
 ---
 
 ## Live Demo
 
-> **[Try iDesk →](#)** *(deployment link — add after Vercel deploy)*
+**[→ Try iDesk Live](https://idesk-ai.vercel.app)**
+
+Click "Start Support Call", allow microphone access, and speak naturally. The agent will triage your issue, attempt a fix, and escalate if needed — just like a real support call.
+
+---
+
+## What is iDesk?
+
+iDesk is a customer-facing IT helpdesk voice agent built for software companies. Users click one button, speak naturally, and iDesk handles the rest:
+
+- Collects name and email (confirmed verbally)
+- Categorizes the issue as Network, Software, Account, or Hardware
+- Asks targeted diagnostic questions
+- Attempts to resolve the issue on the spot
+- If unresolved — schedules a human callback and logs a ticket automatically
+- Sends a confirmation email to the customer
+
+No forms. No hold music. No typing. Just voice.
 
 ---
 
@@ -31,18 +34,18 @@ No forms. No hold music. No typing. Just voice.
 ```
 User speaks via browser
         ↓
-React Frontend (Vite)
+React Frontend (Vite) — live transcript, agent status UI
         ↓
-Express Backend (Token Server)
+Express Backend (Vercel Serverless) — secure token generation
         ↓
-Retell AI — handles STT + LLM + TTS
+Retell AI — STT + GPT-4.1 Nano LLM + TTS
         ↓
-Post-call webhook fires to n8n
+Post-call webhook → n8n automation
         ↓
-┌─────────────────────────────────┐
-│  Google Sheets  │  Gmail        │
-│  Ticket logged  │  Confirmation │
-└─────────────────────────────────┘
+┌──────────────────┬─────────────────────┐
+│  Google Sheets   │  Gmail              │
+│  Ticket logged   │  Confirmation sent  │
+└──────────────────┴─────────────────────┘
 ```
 
 ---
@@ -53,26 +56,27 @@ Post-call webhook fires to n8n
 |---|---|
 | Frontend | React 18 + Vite |
 | Voice Agent | Retell AI (STT + LLM + TTS) |
-| Backend | Node.js + Express |
+| LLM | GPT-4.1 Nano |
+| Backend | Node.js + Express (Vercel Serverless) |
 | Automation | n8n |
 | Ticket Storage | Google Sheets |
 | Notifications | Gmail |
-| Frontend Deploy | Vercel |
-| Backend Deploy | Render |
+| Deployment | Vercel (frontend + backend) |
 
 ---
 
 ## Features
 
 - **Live voice conversation** — real-time STT and TTS via Retell AI
-- **Full call transcript** — every exchange displayed live in the UI
-- **Smart triage flow** — categorizes issues as Network, Software, Account, or Hardware
-- **Diagnostic questioning** — asks 2 targeted questions based on issue category
-- **Auto-resolution attempt** — suggests fixes before escalating
-- **Callback scheduling** — offers time slots and confirms booking
-- **Automated ticket logging** — post-call webhook logs structured data to Google Sheets
-- **Email confirmation** — sends ticket summary to customer automatically
-- **Post-call data extraction** — Retell extracts structured fields (name, email, category, severity, status) from the transcript automatically
+- **Full call transcript** — every exchange accumulated and displayed live
+- **Intelligent triage** — categorizes issues as Network, Software, Account, or Hardware
+- **Adaptive diagnosis** — asks 2 targeted questions per category, adapts to answers
+- **Auto-resolution attempt** — suggests a specific fix before escalating
+- **Callback scheduling** — offers time slots, confirms booking verbally
+- **Post-call data extraction** — Retell extracts structured fields from transcript automatically
+- **Automated ticket logging** — webhook logs clean structured data to Google Sheets
+- **Email confirmation** — sends personalized ticket summary to customer via Gmail
+- **Futuristic UI** — animated rings, live wave visualizer, real-time transcript panel
 
 ---
 
@@ -80,22 +84,26 @@ Post-call webhook fires to n8n
 
 ```
 iDesk/
-├── idesk-backend/          # Express token server
-│   ├── server.js           # Single endpoint: /create-web-call
+├── idesk-backend/
+│   ├── server.js           # Single endpoint: POST /create-web-call
+│   ├── vercel.json         # Vercel serverless config
 │   ├── .env                # RETELL_API_KEY + RETELL_AGENT_ID (not committed)
 │   └── package.json
 │
-├── idesk-frontend/         # React application
+├── idesk-frontend/
 │   ├── src/
-│   │   ├── App.jsx         # Main logic + Retell SDK integration
-│   │   ├── App.css         # All styles
-│   │   ├── index.css       # Global styles + CSS variables
+│   │   ├── App.jsx                   # Main logic + Retell SDK integration
+│   │   ├── App.css                   # All component styles + animations
+│   │   ├── index.css                 # Global styles + CSS variables
 │   │   └── components/
-│   │       ├── CallButton.jsx        # Start/End call button
-│   │       ├── TranscriptPanel.jsx   # Live transcript display
+│   │       ├── CallButton.jsx        # Start/End call with state handling
+│   │       ├── TranscriptPanel.jsx   # Full call transcript accumulator
 │   │       ├── StatusIndicator.jsx   # Agent status + wave animation
-│   │       └── GridBackground.jsx    # Animated background
+│   │       └── GridBackground.jsx    # Animated futuristic background
 │   └── package.json
+│
+├── n8n-workflow/
+│   └── idesk-post-call-automation.json  # Importable n8n workflow
 │
 └── README.md
 ```
@@ -107,8 +115,9 @@ iDesk/
 ### Prerequisites
 
 - Node.js v18+
-- Retell AI account — [retellai.com](https://retellai.com)
-- n8n account (cloud free) — [n8n.io](https://n8n.io)
+- Retell AI account — [retellai.com](https://retellai.com) (free credits included)
+- n8n account — [n8n.io](https://n8n.io) (free cloud tier)
+- Google account (for Sheets + Gmail)
 
 ### 1. Clone the repo
 
@@ -130,7 +139,7 @@ RETELL_API_KEY=your_retell_secret_key
 RETELL_AGENT_ID=your_retell_agent_id
 ```
 
-Start the server:
+Run locally:
 ```bash
 node server.js
 # Running on http://localhost:3000
@@ -145,60 +154,74 @@ npm run dev
 # Running on http://localhost:5173
 ```
 
+In `src/App.jsx`, update the backend URL:
+```js
+// Local development:
+const response = await fetch("http://localhost:3000/create-web-call", ...
+
+// Production:
+const response = await fetch("https://your-backend.vercel.app/create-web-call", ...
+```
+
 ### 4. Configure Retell AI
 
 - Create an agent in the Retell dashboard
-- Set the system prompt to your IT helpdesk instructions
+- Set LLM to GPT-4.1 Nano
+- Paste the system prompt (see Agent Behavior section)
 - Enable Post-Call Data Extraction fields
-- Add your n8n webhook URL in Webhook Settings
+- Set webhook URL to your n8n webhook endpoint
+
+### 5. Import n8n Workflow
+
+- Open n8n → New Workflow → Import from file
+- Select `n8n-workflow/idesk-post-call-automation.json`
+- Connect your Google Sheets and Gmail accounts
+- Update the spreadsheet reference to your `iDesk Tickets` sheet
+- Activate the workflow
 
 ---
 
-## How the Agent Thinks
+## Agent Behavior
 
-The iDesk agent follows a strict conversational flow:
+iDesk uses a production-grade system prompt designed to make the agent:
+
+- **Self-aware** — knows it's on a voice call, keeps responses under 3 sentences
+- **Adaptive** — never repeats a failed fix, escalates after one retry
+- **Human** — no robotic filler phrases, no repeating the user's name every sentence
+- **State-tracking** — never asks for information the user already provided
+
+Conversation flow:
 
 ```
-Greeting → Collect Name → Collect Email (confirmed) →
-Describe Issue → Categorize → Diagnose (2 questions) →
-Attempt Resolution → Resolved? →
-  YES: Log as resolved + confirmation email
-  NO:  Schedule callback → Log ticket + calendar invite + email
+Greeting → Name → Email (confirmed once) → Issue description
+    ↓
+Categorize internally → Ask 1-2 diagnostic questions
+    ↓
+Suggest one targeted fix → Resolved?
+    YES → Log resolved + confirmation email
+    NO  → Escalate → schedule callback → log ticket + email
 ```
 
-Issue categories and their diagnostic questions:
-
-| Category | Question 1 | Question 2 |
+| Category | Q1 | Q2 |
 |---|---|---|
-| Network | All devices or just one? | Started after any recent changes? |
-| Software | What error message? | Every time or intermittent? |
-| Account | Can't log in or permissions issue? | Tried resetting password? |
+| Network | All devices or just one? | After any recent changes? |
+| Software | Any error message? | Every time or intermittent? |
+| Account | Can't log in or permissions issue? | Tried password reset? |
 | Hardware | Completely unresponsive? | Any physical damage? |
 
 ---
 
-## Post-Call Automation (n8n)
+## Post-Call Automation
 
-After every call, Retell fires a webhook to n8n which:
+After every call, Retell fires a `call_analyzed` webhook to n8n which:
 
-1. Receives structured data extracted from the transcript
-2. Logs a new row to Google Sheets with: name, email, issue category, summary, severity, resolution status, callback time, call duration
-3. Sends a confirmation email to the customer via Gmail
+1. Extracts structured data from the transcript
+2. Logs a new row to Google Sheets:
 
-Google Sheets ticket schema:
+| Ticket ID | Timestamp | Name | Email | Category | Summary | Severity | Status | Callback | Duration |
+|---|---|---|---|---|---|---|---|---|---|
 
-| Ticket ID | Timestamp | Name | Email | Category | Summary | Severity | Status | Callback |
-|---|---|---|---|---|---|---|---|---|
-
----
-
-## Roadmap
-
-- [ ] Deploy to Vercel + Render
-- [ ] Google Calendar integration for callback booking
-- [ ] Call history dashboard
-- [ ] Multi-language support
-- [ ] Escalation to human agent via Slack notification
+3. Sends a personalized HTML confirmation email to the customer via Gmail
 
 ---
 
