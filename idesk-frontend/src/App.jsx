@@ -108,7 +108,7 @@ export default function App() {
     setCallStatus("connecting");
 
     try {
-      const response = await fetch("http://localhost:3000/create-web-call", {
+      const response = await fetch("https://idesk-backend.vercel.app/create-web-call", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
       });
